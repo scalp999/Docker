@@ -1,2 +1,4 @@
-FROM nginx:latest
-COPY ./index.html /usr/share/nginx/html/index.html
+# syntax=docker/dockerfile:1
+FROM scratch
+ADD hello /
+CMD ["/hello"]
