@@ -1,0 +1,93 @@
+Started by user Alexander Marinin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/Home_practice
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Getting repo from github)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/Home_practice/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/scalp999/Docker.git # timeout=10
+Fetching upstream changes from https://github.com/scalp999/Docker.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.31.1'
+ > git fetch --tags --force --progress -- https://github.com/scalp999/Docker.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision b3c46a3d1c393015862d22cec910bce76a8bbf6b (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b3c46a3d1c393015862d22cec910bce76a8bbf6b # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main b3c46a3d1c393015862d22cec910bce76a8bbf6b # timeout=10
+Commit message: "Add files via upload"
+ > git rev-list --no-walk b3c46a3d1c393015862d22cec910bce76a8bbf6b # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Creating docker image)
+[Pipeline] sh
++ docker build -t jeckins123/alexm ./
+Sending build context to Docker daemon  707.6kB
+
+Step 1/5 : FROM tomcat:8.0-alpine
+ ---> 624fb61775c3
+Step 2/5 : LABEL maintainer="Alexander"
+ ---> Using cache
+ ---> 0c88014355f2
+Step 3/5 : ADD sample.war /usr/local/tomcat/webapps/
+ ---> Using cache
+ ---> ab4440913f54
+Step 4/5 : EXPOSE 8080
+ ---> Using cache
+ ---> bf23f4d9251e
+Step 5/5 : CMD ["catalina.sh", "run"]
+ ---> Using cache
+ ---> 9d00fdddf042
+Successfully built 9d00fdddf042
+Successfully tagged jeckins123/alexm:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (pushing image to docker hub)
+[Pipeline] sh
++ docker login -u jeckins123 -p 2022dockerhub
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] sh
++ docker push jeckins123/alexm
+Using default tag: latest
+The push refers to repository [docker.io/jeckins123/alexm]
+c4b81983cc22: Preparing
+0136a6a85859: Preparing
+98a0db77a14c: Preparing
+9072514c7af0: Preparing
+f6146a44a7d3: Preparing
+0c3170905795: Preparing
+df64d3292fd6: Preparing
+0c3170905795: Waiting
+df64d3292fd6: Waiting
+0136a6a85859: Pushed
+9072514c7af0: Pushed
+c4b81983cc22: Pushed
+0c3170905795: Pushed
+df64d3292fd6: Pushed
+
+98a0db77a14c: Pushed
+
+f6146a44a7d3: Pushed
+
+latest: digest: sha256:4554e2ce2b2839a7f754fb569e213240bd01b881e6874bb692b0dc706f883c1d size: 1782
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+
